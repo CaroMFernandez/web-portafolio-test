@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Portfolio Showcase</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    
+    <!-- Importar Three.js -->
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+                "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+            }
+        }
+    </script>
+</head>
+<body>
+    <!-- Lienzo centralizado para la "Vista Previa" del objeto 3D -->
+    <div id="canvas-container"></div>
+
+    <!-- Capa de interfaz de usuario -->
+    <div class="ui-layer">
+        
+        <!-- Navbar con el estilo fresco y minimalista -->
+        <header class="glass-header">
+            <div class="logo">
+                <strong>Blender</strong> <span>Showcase</span>
+            </div>
+            <nav>
+                <a href="#" id="nav-gallery" class="active">Galería</a>
+                <a href="#" id="nav-about">Sobre Mí</a>
+                <a href="#" id="nav-contact" class="btn-orange">Contáctame</a>
+            </nav>
+        </header>
+
+        <!-- Información central de la Vista Previa -->
+        <div class="project-info glass-panel">
+            <h1 id="project-title">Iniciando Motor 3D...</h1>
+            <p id="project-desc">Descargando modelo en tiempo real (GLB).</p>
+            <div class="tags">
+                <span class="tag-orange">Renderizado Real</span>
+            </div>
+        </div>
+
+        <!-- Carrusel inferior para seleccionar qué elemento previsualizar -->
+        <div class="gallery-container">
+            <h3 class="gallery-title">Explorar Inventario</h3>
+            <div class="gallery-track" id="gallery-track">
+                <!-- Se llenará vía Javascript con datos ficticios -->
+            </div>
+        </div>
+
+        <!-- Modales Flotantes Superpuestos (Agregado) -->
+        <div id="modal-about" class="modal-overlay hidden">
+            <div class="modal-content glass-panel">
+                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 2rem;">
+                    <h2 style="margin-bottom: 0;">Sobre Mí</h2>
+                    <button class="close-btn" onclick="if(window.closeAllModals) window.closeAllModals()">&times;</button>
+                </div>
+                <div class="about-content">
+                    <!-- Foto aleatoria de Unsplash ficticia de un artista -->
+                    <div class="profile-pic" style="background-image: url('https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=300&auto=format&fit=crop');"></div>
+                    <div>
+                        <h3>Juan Pérez - Artista 3D Integral</h3>
+                        <p>Soy un apasionado creador digital y modelador 3D con más de 5 años puliendo mis habilidades en <strong>Blender</strong>. Me especializo en la creación de entornos interactivos y assets de "Hard Surface" optimizados para motores de juegos como Unreal Engine y WebGL.</p>
+                        <p>Mis piezas se enfocan en encontrar un equilibrio perfecto entre la excelencia técnica de la topología y un estilo visual inolvidable.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="modal-contact" class="modal-overlay hidden">
+            <div class="modal-content glass-panel">
+                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.5rem;">
+                    <h2 style="margin-bottom: 0;">Contáctame</h2>
+                    <button class="close-btn" onclick="if(window.closeAllModals) window.closeAllModals()">&times;</button>
+                </div>
+                <p>¿Tienes en mente un entorno, un personaje o un prop complejo y quieres llevarlo a la realidad paramilitar? Estás en el lugar correcto.</p>
+                <div class="contact-info">
+                    <p><strong>Buzón de Trabajo:</strong> contacto@tunombre-3d.com</p>
+                    <p><strong>Discord:</strong> TuNombre3D#1234</p>
+                    <p><strong>ArtStation:</strong> artstation.com/tunombre3d</p>
+                </div>
+                <!-- Formulario simulado de contacto -->
+                <form class="contact-form" onsubmit="event.preventDefault(); alert('¡Simulación de Formulario! Email enviado al buzón ficticio. Puedes enlazar este formulario a servicios como Formspree o EmailJS después.');">
+                    <input type="text" placeholder="Tu Nombre Completo" required>
+                    <input type="email" placeholder="Correo de contacto" required>
+                    <textarea placeholder="Cuéntame sobre el modelo 3D que necesitas..." rows="4" required></textarea>
+                    <button type="submit" class="btn-orange" style="border: none; cursor: pointer;">Enviar Mensaje</button>
+                </form>
+            </div>
+        </div>
+        
+    </div>
+
+    <!-- Carga del Javascript principal -->
+    <script type="module" src="script.js"></script>
+</body>
+</html>
