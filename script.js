@@ -14,14 +14,14 @@ const init3DScene = () => {
     scene.fog = new THREE.FogExp2(0x0a0a0c, 0.03);
 
     camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 1000);
-    camera.position.set(2, 2, 7); 
+    camera.position.set(2, 2, 7);
 
     renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.0; 
-    renderer.shadowMap.enabled = true; 
+    renderer.toneMappingExposure = 1.0;
+    renderer.shadowMap.enabled = true;
     container.appendChild(renderer.domElement);
 
     controls = new OrbitControls(camera, renderer.domElement);
@@ -37,7 +37,7 @@ const init3DScene = () => {
         const w = window.innerWidth;
         // Si la pantalla es ancha (Escritorio), mándalo a la derecha
         if (w >= 900) {
-            previewObject.position.set(w > 1200 ? 2.5 : 1.8, -2, 0); 
+            previewObject.position.set(w > 1200 ? 2.5 : 1.8, -2, 0);
         } else {
             // Si es un celular o pantalla reducida, ponlo en el centro pero más alejado para hacer espacio
             previewObject.position.set(0, -2, -1.5);
@@ -47,31 +47,31 @@ const init3DScene = () => {
     /* == EL MODELO 3D GLB == */
     const loader = new GLTFLoader();
     const urlFakeBlenderModel = 'https://raw.githubusercontent.com/mrdoob/three.js/master/examples/models/gltf/RobotExpressive/RobotExpressive.glb';
-    
+
     loader.load(urlFakeBlenderModel, function (gltf) {
-            previewObject = gltf.scene;
+        previewObject = gltf.scene;
 
-            previewObject.scale.set(0.6, 0.6, 0.6); 
-            calculateRobotPosition(); // Calcular donde no estorbe el texto
-            
-            previewObject.traverse(function (child) {
-                if (child.isMesh) {
-                    child.castShadow = true;
-                    child.receiveShadow = true;
-                }
-            });
+        previewObject.scale.set(0.6, 0.6, 0.6);
+        calculateRobotPosition(); // Calcular donde no estorbe el texto
 
-            scene.add(previewObject);
+        previewObject.traverse(function (child) {
+            if (child.isMesh) {
+                child.castShadow = true;
+                child.receiveShadow = true;
+            }
+        });
 
-            document.getElementById('project-title').textContent = portfolioData[0].title;
-            document.getElementById('project-desc').textContent = portfolioData[0].description;
-        }, undefined, function (error) { console.error('No se pudo cargar el GLB', error); }
+        scene.add(previewObject);
+
+        document.getElementById('project-title').textContent = portfolioData[0].title;
+        document.getElementById('project-desc').textContent = portfolioData[0].description;
+    }, undefined, function (error) { console.error('No se pudo cargar el GLB', error); }
     );
 
     /* == PARTICULAS == */
     const particlesCount = 700;
     const posArray = new Float32Array(particlesCount * 3);
-    for(let i = 0; i < particlesCount * 3; i++) { posArray[i] = (Math.random() - 0.5) * 15; }
+    for (let i = 0; i < particlesCount * 3; i++) { posArray[i] = (Math.random() - 0.5) * 15; }
     const particlesGeo = new THREE.BufferGeometry();
     particlesGeo.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
     const particlesMat = new THREE.PointsMaterial({ size: 0.02, color: 0xff9900, transparent: true, opacity: 0.6, blending: THREE.AdditiveBlending });
@@ -79,7 +79,7 @@ const init3DScene = () => {
     scene.add(particlesMesh);
 
     /* == LUCES ESTUDIO == */
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.6); 
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
     scene.add(ambientLight);
 
     const dirLight = new THREE.DirectionalLight(0xffffff, 1.5);
@@ -90,7 +90,7 @@ const init3DScene = () => {
     const orangeLight = new THREE.PointLight(0xff6a00, 8);
     orangeLight.position.set(-2, 1, 2);
     scene.add(orangeLight);
-    
+
     const blueLight = new THREE.PointLight(0x00ccff, 3);
     blueLight.position.set(5, -2, -2);
     scene.add(blueLight);
@@ -100,7 +100,7 @@ const init3DScene = () => {
         requestAnimationFrame(animate);
         const elapsedTime = clock.getElapsedTime();
 
-        if(previewObject) {
+        if (previewObject) {
             previewObject.rotation.y = elapsedTime * 0.2;
             // Efecto flotar atado a su posición real X, Z
             const basePos = window.innerWidth >= 900 ? (window.innerWidth > 1200 ? 2.5 : 1.8) : 0;
@@ -108,8 +108,8 @@ const init3DScene = () => {
             previewObject.position.y = baseY + Math.sin(elapsedTime * 0.8) * 0.1;
         }
 
-        if(particlesMesh) particlesMesh.rotation.y = elapsedTime * -0.03;
-        
+        if (particlesMesh) particlesMesh.rotation.y = elapsedTime * -0.03;
+
         controls.update();
         renderer.render(scene, camera);
     };
@@ -193,7 +193,10 @@ const setupModals = () => {
 
     // Anexar también evento a los botones manualmente por si el HTML carece de 'onclick' global
     document.querySelectorAll('.close-btn').forEach(btn => {
-        btn.addEventListener('click', window.closeAllModals);
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation(); // <--- ESTO ES LO QUE TE FALTA
+            window.closeAllModals();
+        });
     });
 };
 
