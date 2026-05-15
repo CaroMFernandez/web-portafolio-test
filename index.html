@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>3D Portfolio Showcase</title>
+    <title>Portafolio - Carolina Fernández</title>
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
@@ -25,48 +25,56 @@
     <div id="canvas-container"></div>
 
     <!-- Capa de interfaz de usuario -->
-    <div class="ui-layer">
+    <main class="ui-layer">
 
         <!-- Navbar con el estilo fresco y minimalista -->
         <header class="glass-header">
             <div class="logo">
-                <strong>Blender</strong> <span>Showcase</span>
+                <strong>Carolina</strong> <span>Fernández</span>
             </div>
             <nav>
-                <a href="#" id="nav-gallery" class="active">Galería</a>
+                <a href="#" id="nav-projects" class="active">Proyectos</a>
                 <a href="#" id="nav-about">Sobre Mí</a>
+                <a href="#" id="nav-skills">Habilidades</a>
                 <a href="#" id="nav-contact" class="btn-orange">Contáctame</a>
             </nav>
         </header>
 
         <!-- Información central de la Vista Previa -->
-        <div class="project-info glass-panel">
-            <h1 id="project-title">Iniciando Motor 3D...</h1>
+        <section class="project-info glass-panel">
+            <header>
+                <h1 id="project-title">Iniciando Motor 3D...</h1>
+            </header>
             <p id="project-desc">Descargando modelo en tiempo real (GLB).</p>
-            <div class="tags">
-                <span class="tag-orange">Renderizado Real</span>
-            </div>
-        </div>
+            <footer class="tags">
+                <span class="tag-orange">Proyecto Escolar</span>
+            </footer>
+        </section>
 
         <!-- Carrusel inferior para seleccionar qué elemento previsualizar -->
-        <div class="gallery-container">
-            <h3 class="gallery-title">Explorar Inventario</h3>
+        <section class="gallery-container">
+            <header>
+                <h3 class="gallery-title"
+                    style="color: transparent; -webkit-text-stroke: 1px #ff6600; font-family: 'Outfit', sans-serif;">Mis
+                    Proyectos
+                </h3>
+            </header>
             <div class="gallery-track" id="gallery-track">
                 <!-- Se llenará vía Javascript con datos ficticios -->
             </div>
-        </div>
+        </section>
 
         <!-- Modales Flotantes Superpuestos (Agregado) -->
-        <div id="modal-about" class="modal-overlay hidden">
-            <div class="modal-content glass-panel"
+        <aside id="modal-about" class="modal-overlay hidden">
+            <article class="modal-content glass-panel"
                 style="position: relative; padding: 40px; max-width: 850px; width: 90%;">
 
-                <button class="close-btn" style="
+                <button class="close-btn" onclick="window.closeAllModals();" style="
                         position: absolute;         /* <--- CAMBIO 1: Lo saca del flujo normal */
                         top: 25px;                  /* <--- CAMBIO 2: Distancia desde arriba */
                         right: 25px;         /* <--- CAMBIO 3: LO MUEVE A LA DERECHA */
-                        z-index: 100;        /* <--- CAMBIO 4: Lo pone al frente de todo */
-                        
+                        z-index: 99999;      /* <--- CAMBIO 4: Lo pone al frente de todo */
+                        pointer-events: auto;
                     ">
                     &times;
                 </button>
@@ -87,15 +95,7 @@
                             style="width: 100%; aspect-ratio: 4/5; border-radius: 12px; background-image: url('https://i.pinimg.com/736x/79/17/58/79175839a8f716f993dbd700dde89535.jpg'); background-size: cover; background-position: center; box-shadow: 0 20px 40px rgba(0,0,0,0.6), 0 0 30px rgba(255,102,0,0.15); border: 1px solid rgba(255,102,0,0.2); position: relative; z-index: 2;">
                         </div>
 
-                        <div
-                            style="margin-top: 1.5rem; display: flex; flex-wrap: wrap; gap: 0.5rem; justify-content: center; width: 100%;">
-                            <span
-                                style="background: rgba(255,102,0,0.1); color: #ff8c33; padding: 6px 14px; border-radius: 20px; font-size: 0.85rem; font-weight: 600; border: 1px solid rgba(255,102,0,0.2);">Blender</span>
-                            <span
-                                style="background: rgba(255,102,0,0.1); color: #ff8c33; padding: 6px 14px; border-radius: 20px; font-size: 0.85rem; font-weight: 600; border: 1px solid rgba(255,102,0,0.2);">Substance</span>
-                            <span
-                                style="background: rgba(255,102,0,0.1); color: #ff8c33; padding: 6px 14px; border-radius: 20px; font-size: 0.85rem; font-weight: 600; border: 1px solid rgba(255,102,0,0.2);">ZBrush</span>
-                        </div>
+                        <!-- Habilidades movidas a una sección separada -->
                     </div>
 
                     <!-- Columna Derecha: Texto -->
@@ -110,18 +110,18 @@
                         </h3>
                         <p
                             style="font-size: 1.2rem; color: #ff8c33; margin-bottom: 1.5rem; font-weight: 400; font-style: italic;">
-                            "Modelando el futuro, un vértice a la vez"</p>
+                            "Su esfuerzo es nuestro orgullo."</p>
 
                         <div
                             style="position: relative; padding-left: 1.5rem; border-left: 3px solid rgba(255,102,0,0.4);">
-                            <p style="color: #ccc; line-height: 1.7; font-size: 1.05rem; margin-bottom: 1rem;">Mi pasión
-                                es esculpir ideas complejas y dar vida a mundos digitales a través de modelos 3D
-                                altamente inmersivos. Me especializo en encontrar la sinergia perfecta entre una
-                                estética visual impactante y una funcionalidad técnica impecable.</p>
-                            <p style="color: #ccc; line-height: 1.7; font-size: 1.05rem; margin-bottom: 0;">Con enfoque
-                                en modelado <strong>Hard-Surface</strong>, creación de props y renders fotorrealistas,
-                                busco siempre que mis modelos no solo se vean espectaculares, sino que estén optimizados
-                                para la exigencia de motores en tiempo real.</p>
+                            <p style="color: #ccc; line-height: 1.7; font-size: 1.05rem; margin-bottom: 1rem;">Soy
+                                estudiante de Ingenieria en sistemas Computacionales en el Instituto Tecnologico de
+                                Mérida. Me gusta programar y estoy aprendiendo a realizar modelado 3D en blender.
+                            </p>
+                            <p style="color: #ccc; line-height: 1.7; font-size: 1.05rem; margin-bottom: 0;">
+                                Programación en
+                                <strong>Java, Python & C++</strong>
+                            </p>
                         </div>
 
                         <div style="margin-top: 2rem; display: flex; gap: 1.5rem;">
@@ -129,39 +129,123 @@
                                 style="background: rgba(0,0,0,0.2); padding: 15px 20px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05); text-align: center; flex: 1;">
                                 <span
                                     style="display: block; font-size: 2rem; font-weight: 800; color: #ff6600; line-height: 1;">
-                                    1</span>
+                                    5°</span>
                                 <span
-                                    style="font-size: 0.8rem; color: #888; text-transform: uppercase; letter-spacing: 1px; margin-top: 5px; display: block;">Años
-                                    Exp.</span>
+                                    style="font-size: 0.8rem; color: #888; text-transform: uppercase; letter-spacing: 1px; margin-top: 5px; display: block;">Semestre</span>
                             </div>
                             <div
                                 style="background: rgba(0,0,0,0.2); padding: 15px 20px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05); text-align: center; flex: 1;">
                                 <span
-                                    style="display: block; font-size: 2rem; font-weight: 800; color: #ff6600; line-height: 1;">100+</span>
+                                    style="display: block; font-size: 2rem; font-weight: 800; color: #ff6600; line-height: 1;">Cybersecurity</span>
                                 <span
-                                    style="font-size: 0.8rem; color: #888; text-transform: uppercase; letter-spacing: 1px; margin-top: 5px; display: block;">Proyectos</span>
+                                    style="font-size: 0.8rem; color: #888; text-transform: uppercase; letter-spacing: 1px; margin-top: 5px; display: block;">Especialidad</span>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
+            </article>
+        </aside>
 
-        <div id="modal-contact" class="modal-overlay hidden">
-            <div class="modal-content glass-panel">
-                <div
+        <aside id="modal-skills" class="modal-overlay hidden">
+            <article class="modal-content glass-panel"
+                style="position: relative; padding: 40px; max-width: 850px; width: 90%;">
+
+                <button class="close-btn" onclick="window.closeAllModals();" style="
+                        position: absolute;         
+                        top: 25px;                  
+                        right: 25px;         
+                        z-index: 99999;      
+                        pointer-events: auto;
+                    ">
+                    &times;
+                </button>
+
+                <div class="skills-content"
+                    style="display: grid; grid-template-columns: 1fr 1fr; gap: 3.5rem; align-items: start; margin-top: 1rem;">
+
+                    <!-- Columna Izquierda: Desarrollo & Programación -->
+                    <div style="display: flex; flex-direction: column; justify-content: center;">
+                        <span
+                            style="color: #ff6600; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 2px; font-weight: 800; margin-bottom: 5px;">Mis
+                            Habilidades</span>
+                        <h3
+                            style="color: #fff; margin-top: 0; font-size: 2.5rem; font-weight: 800; line-height: 1.1; margin-bottom: 1.5rem;">
+                            Desarrollo <span
+                                style="color: transparent; -webkit-text-stroke: 1px #ff6600; font-family: sans-serif;">&
+                            </span>
+                            Programación
+                        </h3>
+
+                        <div style="display: flex; flex-direction: column; gap: 1rem;">
+                            <div
+                                style="background: rgba(0,0,0,0.2); padding: 15px 20px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05); display: flex; align-items: center; gap: 1rem; position: relative; overflow: hidden;">
+                                <div
+                                    style="position: absolute; left: 0; top: 0; bottom: 0; width: 4px; background: #ff6600;">
+                                </div>
+                                <span style="font-size: 1.2rem; font-weight: 600; color: #fff;">Java</span>
+                            </div>
+                            <div
+                                style="background: rgba(0,0,0,0.2); padding: 15px 20px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05); display: flex; align-items: center; gap: 1rem; position: relative; overflow: hidden;">
+                                <div
+                                    style="position: absolute; left: 0; top: 0; bottom: 0; width: 4px; background: #ff6600;">
+                                </div>
+                                <span style="font-size: 1.2rem; font-weight: 600; color: #fff;">Python</span>
+                            </div>
+                            <div
+                                style="background: rgba(0,0,0,0.2); padding: 15px 20px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05); display: flex; align-items: center; gap: 1rem; position: relative; overflow: hidden;">
+                                <div
+                                    style="position: absolute; left: 0; top: 0; bottom: 0; width: 4px; background: #ff6600;">
+                                </div>
+                                <span style="font-size: 1.2rem; font-weight: 600; color: #fff;">C++</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Columna Derecha: Diseño & Modelado -->
+                    <div style="display: flex; flex-direction: column; justify-content: center;">
+                        <span
+                            style="color: transparent; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 2px; font-weight: 800; margin-bottom: 5px; user-select: none;">Espacio</span>
+                        <h3
+                            style="color: #fff; margin-top: 0; font-size: 2.5rem; font-weight: 800; line-height: 1.1; margin-bottom: 1.5rem;">
+                            Diseño <span
+                                style="color: transparent; -webkit-text-stroke: 1px #ff6600; font-family: sans-serif;">&</span>
+                            Modelado
+                        </h3>
+
+                        <div style="display: flex; flex-direction: column; gap: 1rem;">
+                            <div
+                                style="background: rgba(0,0,0,0.2); padding: 15px 20px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05); display: flex; align-items: center; gap: 1rem; position: relative; overflow: hidden;">
+                                <div
+                                    style="position: absolute; left: 0; top: 0; bottom: 0; width: 4px; background: #00ccff;">
+                                </div>
+                                <span style="font-size: 1.2rem; font-weight: 600; color: #fff;">Blender</span>
+                            </div>
+                            <div
+                                style="background: rgba(0,0,0,0.2); padding: 15px 20px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05); display: flex; align-items: center; gap: 1rem; position: relative; overflow: hidden;">
+                                <div
+                                    style="position: absolute; left: 0; top: 0; bottom: 0; width: 4px; background: #00ccff;">
+                                </div>
+                                <span style="font-size: 1.2rem; font-weight: 600; color: #fff;">Rive</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </article>
+        </aside>
+
+        <aside id="modal-contact" class="modal-overlay hidden">
+            <article class="modal-content glass-panel" style="max-width: 650px; width: 90%;">
+                <header
                     style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.5rem;">
                     <h2 style="margin-bottom: 0;">Contáctame</h2>
-                    <button class="close-btn"
-                        onclick="if(window.closeAllModals) window.closeAllModals()">&times;</button>
-                </div>
-                <p>¿Tienes en mente un entorno, un personaje o un prop complejo y quieres llevarlo a la realidad
-                    paramilitar? Estás en el lugar correcto.</p>
-                <div class="contact-info">
-                    <p><strong>Buzón de Trabajo:</strong> contacto@tunombre-3d.com</p>
-                    <p><strong>Discord:</strong> TuNombre3D#1234</p>
-                    <p><strong>ArtStation:</strong> artstation.com/tunombre3d</p>
-                </div>
+                    <button class="close-btn" onclick="window.closeAllModals();">&times;</button>
+                </header>
+                <p>¿Te interesa mi perfil o quieres colaborar en algún proyecto? ¡No dudes en contactarme!</p>
+                <address class="contact-info" style="font-style: normal;">
+                    <p><strong>Correo Electrónico:</strong> carofu2004@gmail.com</p>
+                    <p><strong>GitHub:</strong> github.com/CaroMFernandez</p>
+                    <p><strong>Número: </strong> 9999640777 </p>
+                </address>
                 <!-- Formulario simulado de contacto -->
                 <form class="contact-form"
                     onsubmit="event.preventDefault(); alert('¡Simulación de Formulario! Email enviado al buzón ficticio. Puedes enlazar este formulario a servicios como Formspree o EmailJS después.');">
@@ -171,10 +255,10 @@
                     <button type="submit" class="btn-orange" style="border: none; cursor: pointer;">Enviar
                         Mensaje</button>
                 </form>
-            </div>
-        </div>
+            </article>
+        </aside>
 
-    </div>
+    </main>
 
     <!-- Carga del Javascript principal -->
     <script type="module" src="script.js"></script>

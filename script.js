@@ -46,7 +46,7 @@ const init3DScene = () => {
 
     /* == EL MODELO 3D GLB == */
     const loader = new GLTFLoader();
-    const urlFakeBlenderModel = 'https://raw.githubusercontent.com/mrdoob/three.js/master/examples/models/gltf/RobotExpressive/RobotExpressive.glb';
+    const urlFakeBlenderModel = './assets/3D/SetUp.glb';
 
     loader.load(urlFakeBlenderModel, function (gltf) {
         previewObject = gltf.scene;
@@ -63,8 +63,8 @@ const init3DScene = () => {
 
         scene.add(previewObject);
 
-        document.getElementById('project-title').textContent = portfolioData[0].title;
-        document.getElementById('project-desc').textContent = portfolioData[0].description;
+        document.getElementById('project-title').innerHTML = portfolioData[0].title;
+        document.getElementById('project-desc').innerHTML = portfolioData[0].description;
     }, undefined, function (error) { console.error('No se pudo cargar el GLB', error); }
     );
 
@@ -124,11 +124,15 @@ const init3DScene = () => {
     });
 };
 
-/* --- DATOS FICTICIOS --- */
+/* --- DATOS DE PROYECTOS --- */
 const portfolioData = [
-    { id: 1, title: "Robot Expresivo", description: "ESTE ES EL MODELO IMPORTADO DESDE ('glb'). Fue generado en Blender y cargado exitosamente. Gíralo y haz Zoom con tu ratón.", image: "https://images.unsplash.com/photo-1534447677768-be436bb09401?q=80&w=400&auto=format&fit=crop" },
-    { id: 2, title: "Espada Medieval", description: "Renderizado fotorealista en Cycles. Se logró una simulación de desgate del metal.", image: "https://images.unsplash.com/photo-1590341328520-22d41b8a514d?q=80&w=400&auto=format&fit=crop" },
-    { id: 3, title: "Interior Minimalista", description: "Estudio de luz en interiores usando PBR. Horneado en Eevee.", image: "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?q=80&w=400&auto=format&fit=crop" }
+    {
+        id: 1,
+        title: "Setup Programador",
+        description: "Modelo 3D integral generado en Blender.<br><br>Elementos importados:<br>• Taza Minecraft<br>• Silla Ergonómica<br>• Mouse Gamer",
+        image: "./assets/Setup2.png"
+    },
+    { id: 2, title: "Animación en Rive", description: "Proyecto de animación interactiva creado con Rive. <br><br><a href='https://github.com/CaroMFernandez/login_with_rive_animation_torres_com' target='_blank' style='color: #ff6a00; text-decoration: underline; font-weight: 600;'>Ver Repositorio en GitHub</a>", image: "https://github.com/CaroMFernandez/login_with_rive_animation_torres_com/raw/main/assets/demo.gif" },
 ];
 
 const renderGallery = () => {
@@ -142,7 +146,7 @@ const renderGallery = () => {
         itemDiv.className = `gallery-item ${index === 0 ? 'active' : ''}`;
         itemDiv.style.backgroundImage = `url(${item.image})`;
         const titleSpan = document.createElement('span');
-        titleSpan.textContent = item.title;
+        titleSpan.innerHTML = item.title;
         itemDiv.appendChild(titleSpan);
 
         itemDiv.addEventListener('click', () => {
@@ -151,8 +155,8 @@ const renderGallery = () => {
             titleEl.style.opacity = 0;
             descEl.style.opacity = 0;
             setTimeout(() => {
-                titleEl.textContent = item.title;
-                descEl.textContent = item.description;
+                titleEl.innerHTML = item.title;
+                descEl.innerHTML = item.description;
                 titleEl.style.opacity = 1;
                 descEl.style.opacity = 1;
             }, 300);
@@ -166,12 +170,14 @@ const setupModals = () => {
     window.closeAllModals = () => {
         document.getElementById('modal-about')?.classList.add('hidden');
         document.getElementById('modal-contact')?.classList.add('hidden');
-        document.getElementById('nav-gallery')?.classList.add('active'); // Regresar selector a Galería
+        document.getElementById('modal-skills')?.classList.add('hidden');
+        document.getElementById('nav-projects')?.classList.add('active'); // Regresar selector a Proyectos
         document.getElementById('nav-about')?.classList.remove('active');
         document.getElementById('nav-contact')?.classList.remove('active');
+        document.getElementById('nav-skills')?.classList.remove('active');
     };
 
-    document.getElementById('nav-gallery')?.addEventListener('click', (e) => {
+    document.getElementById('nav-projects')?.addEventListener('click', (e) => {
         e.preventDefault();
         window.closeAllModals();
     });
@@ -181,20 +187,29 @@ const setupModals = () => {
         window.closeAllModals();
         document.getElementById('modal-about').classList.remove('hidden');
         document.getElementById('nav-about').classList.add('active');
-        document.getElementById('nav-gallery').classList.remove('active');
+        document.getElementById('nav-projects').classList.remove('active');
+    });
+
+    document.getElementById('nav-skills')?.addEventListener('click', (e) => {
+        e.preventDefault();
+        window.closeAllModals();
+        document.getElementById('modal-skills').classList.remove('hidden');
+        document.getElementById('nav-skills').classList.add('active');
+        document.getElementById('nav-projects').classList.remove('active');
     });
 
     document.getElementById('nav-contact')?.addEventListener('click', (e) => {
         e.preventDefault();
         window.closeAllModals();
         document.getElementById('modal-contact').classList.remove('hidden');
-        document.getElementById('nav-gallery').classList.remove('active');
+        document.getElementById('nav-contact').classList.add('active');
+        document.getElementById('nav-projects').classList.remove('active');
     });
 
     // Anexar también evento a los botones manualmente por si el HTML carece de 'onclick' global
     document.querySelectorAll('.close-btn').forEach(btn => {
         btn.addEventListener('click', (e) => {
-            e.stopPropagation(); // <--- ESTO ES LO QUE TE FALTA
+            e.stopPropagation();
             window.closeAllModals();
         });
     });
