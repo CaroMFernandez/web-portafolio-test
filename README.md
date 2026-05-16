@@ -17,7 +17,3 @@ The setup was modeled in **Blender** and exported as a **GLB** file.
 - **Frontend:** HTML5, CSS3 (Flexbox/Grid), JavaScript (ES6+).
 - **3D Engine:** Three.js (WebGL).
 - **Assets:** Blender, Google Fonts (Outfit).
-
-## 📄 How to Run
-1. Clone the repository.
-2. Open `index.html` using a local server (like Live Server in VS Code) to avoid CORS issues with the 3D model.

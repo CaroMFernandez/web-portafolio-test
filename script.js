@@ -5,6 +5,7 @@ import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 let scene, camera, renderer, controls;
 let previewObject;
 let particlesMesh;
+let ambientLight, dirLight, orangeLight, blueLight;
 
 const init3DScene = () => {
     const container = document.getElementById('canvas-container');
@@ -28,45 +29,96 @@ const init3DScene = () => {
     controls.enableDamping = true;
     controls.dampingFactor = 0.05;
     controls.enableZoom = true;
+    controls.enablePan = true;
+    controls.autoRotate = true; // Rotación automática suave
+    controls.autoRotateSpeed = 1.0;
     controls.maxPolarAngle = Math.PI / 1.5;
     controls.minPolarAngle = 0.1;
+    controls.target.set(0, -2, 0); // Fija el centro de rotación en el objeto
 
-    // Función para reposicionar Robot según el tipo de pantalla
-    const calculateRobotPosition = () => {
-        if (!previewObject) return;
+    // Función para ajustar la cámara y el objeto
+    const updateRobotAndCamera = () => {
         const w = window.innerWidth;
-        // Si la pantalla es ancha (Escritorio), mándalo a la derecha
+        const h = window.innerHeight;
+
+        // Offset de la cámara para que en PC se vea a la derecha
         if (w >= 900) {
-            previewObject.position.set(w > 1200 ? 2.5 : 1.8, -2, 0);
+            // Aumentamos ligeramente el shift para asegurar que el objeto quede bien a la derecha
+            const shift = w > 1200 ? -w * 0.3 : -w * 0.25;
+            camera.setViewOffset(w, h, shift, 0, w, h);
+            if (previewObject) {
+                previewObject.position.set(0, -2, 0);
+                controls.target.set(0, -2, 0);
+            }
         } else {
-            // Si es un celular o pantalla reducida, ponlo en el centro pero más alejado para hacer espacio
-            previewObject.position.set(0, -2, -1.5);
+            camera.clearViewOffset();
+            if (previewObject) {
+                previewObject.position.set(0, -2, -1.5);
+                controls.target.set(0, -2, -1.5);
+            }
         }
+        controls.update();
     };
 
     /* == EL MODELO 3D GLB == */
     const loader = new GLTFLoader();
-    const urlFakeBlenderModel = './assets/3D/SetUp.glb';
 
-    loader.load(urlFakeBlenderModel, function (gltf) {
-        previewObject = gltf.scene;
+    // Convertimos la carga en una función global para llamarla desde los botones
+    window.loadModel = (url) => {
+        if (previewObject) {
+            scene.remove(previewObject);
+        }
 
-        previewObject.scale.set(0.6, 0.6, 0.6);
-        calculateRobotPosition(); // Calcular donde no estorbe el texto
+        loader.load(url, function (gltf) {
+            const model = gltf.scene;
 
-        previewObject.traverse(function (child) {
-            if (child.isMesh) {
-                child.castShadow = true;
-                child.receiveShadow = true;
+            // Calcular el bounding box para centrar el modelo
+            const box = new THREE.Box3().setFromObject(model);
+            const center = box.getCenter(new THREE.Vector3());
+
+            model.position.x = -center.x;
+            model.position.y = -center.y;
+            model.position.z = -center.z;
+
+            // Crear un grupo que contendrá el modelo centrado
+            previewObject = new THREE.Group();
+            previewObject.add(model);
+
+            // Si el modelo es muy grande, ajustar escala dinámicamente basado en su tamaño
+            const size = box.getSize(new THREE.Vector3());
+            const maxDim = Math.max(size.x, size.y, size.z);
+            const targetSize = 8; // Tamaño máximo deseado en la escena
+            const scale = targetSize / maxDim;
+
+            // Usar la escala dinámica si es menor que 0.6 para evitar que sea inmenso, sino mantener un buen tamaño
+            const finalScale = Math.min(scale, 0.6);
+            previewObject.scale.set(finalScale, finalScale, finalScale);
+
+            updateRobotAndCamera(); // Ajustar cámara y posición del objeto
+
+            previewObject.traverse(function (child) {
+                if (child.isMesh) {
+                    child.castShadow = true;
+                    child.receiveShadow = true;
+                }
+            });
+
+            scene.add(previewObject);
+
+            // Actualizar los textos solo para el primer modelo o si quieres textos dinámicos después
+            if (url === './assets/3D/SetUp.glb') {
+                const titleEl = document.getElementById('project-title');
+                const descEl = document.getElementById('project-desc');
+                if (titleEl && portfolioData[0]) titleEl.innerHTML = portfolioData[0].title;
+                if (descEl && portfolioData[0]) descEl.innerHTML = portfolioData[0].description;
             }
+        }, undefined, function (error) {
+            console.error('No se pudo cargar el GLB', error);
         });
+    };
 
-        scene.add(previewObject);
-
-        document.getElementById('project-title').innerHTML = portfolioData[0].title;
-        document.getElementById('project-desc').innerHTML = portfolioData[0].description;
-    }, undefined, function (error) { console.error('No se pudo cargar el GLB', error); }
-    );
+    // Carga inicial
+    window.loadModel('./assets/3D/SetUp.glb');
 
     /* == PARTICULAS == */
     const particlesCount = 700;
@@ -79,19 +131,19 @@ const init3DScene = () => {
     scene.add(particlesMesh);
 
     /* == LUCES ESTUDIO == */
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+    ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
     scene.add(ambientLight);
 
-    const dirLight = new THREE.DirectionalLight(0xffffff, 1.5);
+    dirLight = new THREE.DirectionalLight(0xffffff, 1.5);
     dirLight.position.set(5, 5, 5);
     dirLight.castShadow = true;
     scene.add(dirLight);
 
-    const orangeLight = new THREE.PointLight(0xff6a00, 8);
+    orangeLight = new THREE.PointLight(0xff6a00, 8);
     orangeLight.position.set(-2, 1, 2);
     scene.add(orangeLight);
 
-    const blueLight = new THREE.PointLight(0x00ccff, 3);
+    blueLight = new THREE.PointLight(0x00ccff, 3);
     blueLight.position.set(5, -2, -2);
     scene.add(blueLight);
 
@@ -101,9 +153,8 @@ const init3DScene = () => {
         const elapsedTime = clock.getElapsedTime();
 
         if (previewObject) {
-            previewObject.rotation.y = elapsedTime * 0.2;
-            // Efecto flotar atado a su posición real X, Z
-            const basePos = window.innerWidth >= 900 ? (window.innerWidth > 1200 ? 2.5 : 1.8) : 0;
+            // Removida la rotación forzada del objeto para que OrbitControls funcione correctamente
+            // El efecto flotar se mantiene solo en el eje Y
             const baseY = -2;
             previewObject.position.y = baseY + Math.sin(elapsedTime * 0.8) * 0.1;
         }
@@ -120,7 +171,7 @@ const init3DScene = () => {
         camera.aspect = window.innerWidth / window.innerHeight;
         camera.updateProjectionMatrix();
         renderer.setSize(window.innerWidth, window.innerHeight);
-        calculateRobotPosition();
+        updateRobotAndCamera();
     });
 };
 
@@ -206,7 +257,6 @@ const setupModals = () => {
         document.getElementById('nav-projects').classList.remove('active');
     });
 
-    // Anexar también evento a los botones manualmente por si el HTML carece de 'onclick' global
     document.querySelectorAll('.close-btn').forEach(btn => {
         btn.addEventListener('click', (e) => {
             e.stopPropagation();
@@ -215,8 +265,74 @@ const setupModals = () => {
     });
 };
 
+/* --- INTERACCIONES PROGRAMADAS --- */
+const setupInteractions = () => {
+    // 1. Modo Claro / Oscuro
+    const themeBtn = document.getElementById('theme-toggle');
+    let isLightMode = false;
+
+    themeBtn?.addEventListener('click', () => {
+        isLightMode = !isLightMode;
+        document.body.classList.toggle('light-theme');
+        themeBtn.innerHTML = isLightMode ? '<span style="pointer-events: none;">🌙</span>' : '<span style="pointer-events: none;">☀️</span>';
+
+        if (scene && scene.fog) {
+            if (isLightMode) {
+                scene.fog.color.setHex(0xf0f2f5);
+                scene.fog.density = 0.04;
+                if (ambientLight) ambientLight.intensity = 1.5;
+                if (dirLight) dirLight.intensity = 2.0;
+            } else {
+                scene.fog.color.setHex(0x0a0a0c);
+                scene.fog.density = 0.03;
+                if (ambientLight) ambientLight.intensity = 0.6;
+                if (dirLight) dirLight.intensity = 1.5;
+            }
+        }
+    });
+
+    // 2. Botón de Color del Setup
+    const colorBtn = document.getElementById('color-toggle');
+    let currentThemeIndex = 0;
+
+    // Definimos las rutas a los archivos que tú exportaste
+    const setupThemes = [
+        {
+            name: "Naranja",
+            file: "./assets/3D/SetUp.glb",
+            accentUI: "#ff6a00"
+        },
+        {
+            name: "Cyan",
+            file: "./assets/3D/SetUp_cyan.glb",
+            accentUI: "#00ffff"
+        },
+        {
+            name: "Rosa",
+            file: "./assets/3D/SetUp_rosa.glb",
+            accentUI: "#ff66b2"
+        }
+    ];
+
+    colorBtn?.addEventListener('click', () => {
+        currentThemeIndex = (currentThemeIndex + 1) % setupThemes.length;
+        const theme = setupThemes[currentThemeIndex];
+
+        // Actualizamos colores de UI y luces para que todo combine
+        document.documentElement.style.setProperty('--accent', theme.accentUI);
+        if (orangeLight) orangeLight.color.set(theme.accentUI);
+        if (particlesMesh) particlesMesh.material.color.set(theme.accentUI);
+
+        // Cargar el archivo 3D correspondiente desde Blender
+        if (window.loadModel) {
+            window.loadModel(theme.file);
+        }
+    });
+};
+
 document.addEventListener('DOMContentLoaded', () => {
     init3DScene();
     renderGallery();
     setupModals();
+    setupInteractions();
 });

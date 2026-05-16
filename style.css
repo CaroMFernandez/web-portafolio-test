@@ -1,4 +1,3 @@
-/* Colores Frescos: Fondo negro azabache suave y naranja vibrante */
 :root {
     --bg-dark: #0a0a0c;
     --text-primary: #ffffff;
@@ -7,6 +6,45 @@
     --accent-light: #ff9900;
     --glass-bg: rgba(255, 255, 255, 0.05);
     --glass-border: rgba(255, 255, 255, 0.1);
+}
+
+body.light-theme {
+    --bg-dark: #f0f2f5;
+    --text-primary: #1a1a1c;
+    --text-secondary: #5f6368;
+    --glass-bg: rgba(255, 255, 255, 0.6);
+    --glass-border: rgba(0, 0, 0, 0.15);
+}
+
+body.light-theme .project-info {
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.8) 0%, rgba(240, 240, 245, 0.6) 100%);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+}
+
+body.light-theme .modal-content {
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.95), rgba(240, 240, 245, 0.95));
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+}
+
+body.light-theme #project-title,
+body.light-theme .about-header h2 {
+    background: linear-gradient(to right, #1a1a1c, #4a4a4c);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+body.light-theme .gallery-item::after {
+    background: linear-gradient(to top, rgba(255, 255, 255, 0.9) 0%, transparent 60%);
+}
+
+body.light-theme .gallery-item span,
+body.light-theme .about-bio p strong,
+body.light-theme .skills-tags span:hover {
+    color: var(--text-primary);
+}
+
+body.light-theme .skills-tags span {
+    background: rgba(0, 0, 0, 0.05);
 }
 
 * {
@@ -298,7 +336,8 @@ nav a.active {
 .about-modal {
     max-width: 850px;
     padding: 3rem;
-    width: 95%; /* Asegurar que no rebase en tablets */
+    width: 95%;
+    /* Asegurar que no rebase en tablets */
 }
 
 .about-grid {
@@ -324,8 +363,13 @@ nav a.active {
 }
 
 @keyframes rotateGlow {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
 }
 
 .profile-pic-large {
@@ -341,8 +385,13 @@ nav a.active {
 }
 
 @keyframes reverseRotateGlow {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(-360deg); }
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(-360deg);
+    }
 }
 
 .quick-stats {
@@ -509,12 +558,56 @@ nav a.active {
         gap: 2rem;
         text-align: center;
     }
+
     .about-modal {
         padding: 2rem;
         max-height: 80vh;
         overflow-y: auto;
     }
+
     .skills-tags {
         justify-content: center;
     }
+}
+
+/* Controles Flotantes para Interacciones JS */
+.floating-controls {
+    position: fixed;
+    right: 25px;
+    bottom: 25px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    z-index: 9999;
+    pointer-events: auto;
+}
+
+.control-btn {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    color: var(--text-primary);
+    font-size: 1.4rem;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+}
+
+body.light-theme .control-btn {
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+.control-btn:hover {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #fff;
+    transform: scale(1.1) translateY(-3px);
+    box-shadow: 0 10px 30px rgba(255, 106, 0, 0.4);
 }
