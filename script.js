@@ -218,6 +218,30 @@ const renderGallery = () => {
 
 /* --- MODALES A PRUEBA DE FALLOS --- */
 const setupModals = () => {
+    const mainNav = document.getElementById('main-nav');
+    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+    const closeMenuBtn = document.getElementById('close-menu-btn');
+
+    mobileMenuBtn?.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const isOpen = mainNav?.classList.toggle('show-mobile-menu');
+        document.body.classList.toggle('mobile-menu-active', isOpen);
+    });
+
+    closeMenuBtn?.addEventListener('click', (e) => {
+        e.stopPropagation();
+        mainNav?.classList.remove('show-mobile-menu');
+        document.body.classList.remove('mobile-menu-active');
+    });
+
+    // Cerrar menú móvil al hacer click fuera
+    document.addEventListener('click', (e) => {
+        if (!mainNav?.contains(e.target) && e.target !== mobileMenuBtn) {
+            mainNav?.classList.remove('show-mobile-menu');
+            document.body.classList.remove('mobile-menu-active');
+        }
+    });
+
     window.closeAllModals = () => {
         document.getElementById('modal-about')?.classList.add('hidden');
         document.getElementById('modal-contact')?.classList.add('hidden');
@@ -226,6 +250,9 @@ const setupModals = () => {
         document.getElementById('nav-about')?.classList.remove('active');
         document.getElementById('nav-contact')?.classList.remove('active');
         document.getElementById('nav-skills')?.classList.remove('active');
+        mainNav?.classList.remove('show-mobile-menu'); // Cerrar el menú móvil
+        document.body.classList.remove('mobile-menu-active');
+        document.body.classList.remove('modal-active'); // Remover clase de modal activo
     };
 
     document.getElementById('nav-projects')?.addEventListener('click', (e) => {
@@ -239,6 +266,7 @@ const setupModals = () => {
         document.getElementById('modal-about').classList.remove('hidden');
         document.getElementById('nav-about').classList.add('active');
         document.getElementById('nav-projects').classList.remove('active');
+        document.body.classList.add('modal-active'); // Agregar clase de modal activo
     });
 
     document.getElementById('nav-skills')?.addEventListener('click', (e) => {
@@ -247,6 +275,7 @@ const setupModals = () => {
         document.getElementById('modal-skills').classList.remove('hidden');
         document.getElementById('nav-skills').classList.add('active');
         document.getElementById('nav-projects').classList.remove('active');
+        document.body.classList.add('modal-active'); // Agregar clase de modal activo
     });
 
     document.getElementById('nav-contact')?.addEventListener('click', (e) => {
@@ -255,6 +284,7 @@ const setupModals = () => {
         document.getElementById('modal-contact').classList.remove('hidden');
         document.getElementById('nav-contact').classList.add('active');
         document.getElementById('nav-projects').classList.remove('active');
+        document.body.classList.add('modal-active'); // Agregar clase de modal activo
     });
 
     document.querySelectorAll('.close-btn').forEach(btn => {
