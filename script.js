@@ -65,55 +65,62 @@ const init3DScene = () => {
 
     // Convertimos la carga en una función global para llamarla desde los botones
     window.loadModel = (url) => {
+        console.log('Iniciando carga del modelo 3D:', url);
         if (previewObject) {
             scene.remove(previewObject);
         }
 
         loader.load(url, function (gltf) {
-            const model = gltf.scene;
+            try {
+                console.log('Modelo 3D descargado con éxito:', url);
+                const model = gltf.scene;
 
-            // Calcular el bounding box para centrar el modelo
-            const box = new THREE.Box3().setFromObject(model);
-            const center = box.getCenter(new THREE.Vector3());
+                // Calcular el bounding box para centrar el modelo
+                const box = new THREE.Box3().setFromObject(model);
+                const center = box.getCenter(new THREE.Vector3());
 
-            model.position.x = -center.x;
-            model.position.y = -center.y;
-            model.position.z = -center.z;
+                model.position.x = -center.x;
+                model.position.y = -center.y;
+                model.position.z = -center.z;
 
-            // Crear un grupo que contendrá el modelo centrado
-            previewObject = new THREE.Group();
-            previewObject.add(model);
+                // Crear un grupo que contendrá el modelo centrado
+                previewObject = new THREE.Group();
+                previewObject.add(model);
 
-            // Si el modelo es muy grande, ajustar escala dinámicamente basado en su tamaño
-            const size = box.getSize(new THREE.Vector3());
-            const maxDim = Math.max(size.x, size.y, size.z);
-            const targetSize = 8; // Tamaño máximo deseado en la escena
-            const scale = targetSize / maxDim;
+                // Si el modelo es muy grande, ajustar escala dinámicamente basado en su tamaño
+                const size = box.getSize(new THREE.Vector3());
+                const maxDim = Math.max(size.x, size.y, size.z);
+                const targetSize = 8; // Tamaño máximo deseado en la escena
+                const scale = targetSize / maxDim;
 
-            // Usar la escala dinámica si es menor que 0.6 para evitar que sea inmenso, sino mantener un buen tamaño
-            const finalScale = Math.min(scale, 0.6);
-            previewObject.scale.set(finalScale, finalScale, finalScale);
+                // Usar la escala dinámica si es menor que 0.6 para evitar que sea inmenso, sino mantener un buen tamaño
+                const finalScale = Math.min(scale, 0.6);
+                previewObject.scale.set(finalScale, finalScale, finalScale);
 
-            updateRobotAndCamera(); // Ajustar cámara y posición del objeto
+                updateRobotAndCamera(); // Ajustar cámara y posición del objeto
 
-            previewObject.traverse(function (child) {
-                if (child.isMesh) {
-                    child.castShadow = true;
-                    child.receiveShadow = true;
+                previewObject.traverse(function (child) {
+                    if (child.isMesh) {
+                        child.castShadow = true;
+                        child.receiveShadow = true;
+                    }
+                });
+
+                scene.add(previewObject);
+                console.log('Modelo 3D añadido a la escena correctamente:', url);
+
+                // Actualizar los textos solo para el primer modelo o si quieres textos dinámicos después
+                if (url === './assets/3D/SetUp.glb') {
+                    const titleEl = document.getElementById('project-title');
+                    const descEl = document.getElementById('project-desc');
+                    if (titleEl && portfolioData[0]) titleEl.innerHTML = portfolioData[0].title;
+                    if (descEl && portfolioData[0]) descEl.innerHTML = portfolioData[0].description;
                 }
-            });
-
-            scene.add(previewObject);
-
-            // Actualizar los textos solo para el primer modelo o si quieres textos dinámicos después
-            if (url === './assets/3D/SetUp.glb') {
-                const titleEl = document.getElementById('project-title');
-                const descEl = document.getElementById('project-desc');
-                if (titleEl && portfolioData[0]) titleEl.innerHTML = portfolioData[0].title;
-                if (descEl && portfolioData[0]) descEl.innerHTML = portfolioData[0].description;
+            } catch (err) {
+                console.error('Error al inicializar y renderizar el modelo cargado:', err);
             }
         }, undefined, function (error) {
-            console.error('No se pudo cargar el GLB', error);
+            console.error('Error del GLTFLoader al descargar el archivo:', url, error);
         });
     };
 
@@ -351,32 +358,39 @@ const setupModals = () => {
 
 /* --- INTERACCIONES PROGRAMADAS --- */
 const setupInteractions = () => {
-    // 1. Modo Claro / Oscuro
-    const themeBtn = document.getElementById('theme-toggle');
+    // 1. Modo Claro / Oscuro (Soporta múltiples botones)
+    const themeBtns = document.querySelectorAll('.theme-toggle');
     let isLightMode = false;
 
-    themeBtn?.addEventListener('click', () => {
-        isLightMode = !isLightMode;
-        document.body.classList.toggle('light-theme');
-        themeBtn.innerHTML = isLightMode ? '<span style="pointer-events: none;">🌙</span>' : '<span style="pointer-events: none;">☀️</span>';
+    themeBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            isLightMode = !isLightMode;
+            document.body.classList.toggle('light-theme');
 
-        if (scene && scene.fog) {
-            if (isLightMode) {
-                scene.fog.color.setHex(0xf0f2f5);
-                scene.fog.density = 0.04;
-                if (ambientLight) ambientLight.intensity = 1.5;
-                if (dirLight) dirLight.intensity = 2.0;
-            } else {
-                scene.fog.color.setHex(0x0a0a0c);
-                scene.fog.density = 0.03;
-                if (ambientLight) ambientLight.intensity = 0.6;
-                if (dirLight) dirLight.intensity = 1.5;
+            // Sincronizar todos los iconos de los botones de tema en pantalla
+            const allThemeBtns = document.querySelectorAll('.theme-toggle');
+            allThemeBtns.forEach(tBtn => {
+                tBtn.innerHTML = isLightMode ? '<span style="pointer-events: none;">🌙</span>' : '<span style="pointer-events: none;">☀️</span>';
+            });
+
+            if (scene && scene.fog) {
+                if (isLightMode) {
+                    scene.fog.color.setHex(0xf0f2f5);
+                    scene.fog.density = 0.04;
+                    if (ambientLight) ambientLight.intensity = 1.5;
+                    if (dirLight) dirLight.intensity = 2.0;
+                } else {
+                    scene.fog.color.setHex(0x0a0a0c);
+                    scene.fog.density = 0.03;
+                    if (ambientLight) ambientLight.intensity = 0.6;
+                    if (dirLight) dirLight.intensity = 1.5;
+                }
             }
-        }
+        });
     });
 
-    // 2. Botón de Color del Setup
-    const colorBtn = document.getElementById('color-toggle');
+    // 2. Botón de Color del Setup (Soporta múltiples botones)
+    const colorBtns = document.querySelectorAll('.color-toggle');
     let currentThemeIndex = 0;
 
     // Definimos las rutas a los archivos que tú exportaste
@@ -398,19 +412,27 @@ const setupInteractions = () => {
         }
     ];
 
-    colorBtn?.addEventListener('click', () => {
-        currentThemeIndex = (currentThemeIndex + 1) % setupThemes.length;
-        const theme = setupThemes[currentThemeIndex];
+    colorBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            currentThemeIndex = (currentThemeIndex + 1) % setupThemes.length;
+            const theme = setupThemes[currentThemeIndex];
 
-        // Actualizamos colores de UI y luces para que todo combine
-        document.documentElement.style.setProperty('--accent', theme.accentUI);
-        if (orangeLight) orangeLight.color.set(theme.accentUI);
-        if (particlesMesh) particlesMesh.material.color.set(theme.accentUI);
+            // Actualizamos colores de UI y luces para que todo combine
+            document.documentElement.style.setProperty('--accent', theme.accentUI);
+            if (orangeLight && orangeLight.color) {
+                orangeLight.color.set(theme.accentUI);
+            }
+            if (particlesMesh && particlesMesh.material && particlesMesh.material.color) {
+                particlesMesh.material.color.set(theme.accentUI);
+            }
 
-        // Cargar el archivo 3D correspondiente desde Blender
-        if (window.loadModel) {
-            window.loadModel(theme.file);
-        }
+            console.log('Click detectado en cambio de color. Cargando tema:', theme.name, 'desde:', theme.file);
+
+            // Cargar el archivo 3D correspondiente desde Blender
+            if (window.loadModel) {
+                window.loadModel(theme.file);
+            }
+        });
     });
 };
 

@@ -32,6 +32,15 @@
             <div class="logo">
                 <strong>Carolina</strong> <span>Fernández</span>
             </div>
+            <!-- Botones de control integrados para móvil -->
+            <div class="header-controls">
+                <button class="header-control-btn theme-toggle" title="Alternar Modo Claro/Oscuro">
+                    <span style="pointer-events: none;">☀️</span>
+                </button>
+                <button class="header-control-btn color-toggle" title="Cambiar Diseño del Setup">
+                    <span style="pointer-events: none;">🎨</span>
+                </button>
+            </div>
             <button id="mobile-menu-btn" class="mobile-menu-btn" title="Menú">
                 &#8942;
             </button>
@@ -46,21 +55,26 @@
 
         <!-- Información central de la Vista Previa -->
         <section class="project-info glass-panel">
+            <!-- Título de Proyectos para Celular -->
+            <h3 class="mobile-projects-title">Proyectos</h3>
             <!-- Tabs de navegación de proyectos (Modo Responsivo) -->
             <div class="project-tabs">
                 <button class="project-tab active" data-project-index="0" title="Ver Setup 3D">
-                    <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
                         <path d="M4 8h16a2 2 0 0 1 2 2v5a3 3 0 0 1-3 3H5a3 3 0 0 1-3-3v-5a2 2 0 0 1 2-2z" />
                         <path d="M10 8V6a2 2 0 0 1 2-2h0a2 2 0 0 1 2 2v2" />
                         <circle cx="7" cy="13" r="1" />
                         <circle cx="17" cy="13" r="1" />
                         <path d="M12 14v1" />
                     </svg>
-                    <span>3D</span>
+                    <span>Setup</span>
                 </button>
                 <button class="project-tab" data-project-index="1" title="Ver Animación Rive">
-                    <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M12 5c.67 0 1.35.09 2 .26L18.5 2 17 7.5c2.32 1.4 3.5 3.7 3.5 6.5A8.5 8.5 0 0 1 12 22 8.5 8.5 0 0 1 3.5 14c0-2.8 1.18-5.1 3.5-6.5L5.5 2 10 5.26c.65-.17 1.33-.26 2-.26z" />
+                    <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path
+                            d="M12 5c.67 0 1.35.09 2 .26L18.5 2 17 7.5c2.32 1.4 3.5 3.7 3.5 6.5A8.5 8.5 0 0 1 12 22 8.5 8.5 0 0 1 3.5 14c0-2.8 1.18-5.1 3.5-6.5L5.5 2 10 5.26c.65-.17 1.33-.26 2-.26z" />
                         <path d="M9 14h.01M15 14h.01" />
                         <path d="M12 16.5a1.5 1.5 0 0 1-1.5-1.5h3a1.5 1.5 0 0 1-1.5 1.5z" />
                     </svg>
@@ -81,7 +95,8 @@
         <section class="gallery-container">
             <header>
                 <h3 class="gallery-title"
-                    style="color: transparent; -webkit-text-stroke: 1px var(--accent); font-family: 'Outfit', sans-serif;">Mis
+                    style="color: transparent; -webkit-text-stroke: 1px var(--accent); font-family: 'Outfit', sans-serif;">
+                    Mis
                     Proyectos
                 </h3>
             </header>
@@ -138,8 +153,7 @@
                             style="font-size: 1.2rem; color: #ff8c33; margin-bottom: 1.5rem; font-weight: 400; font-style: italic;">
                             "Su esfuerzo es nuestro orgullo."</p>
 
-                        <div
-                            style="position: relative; padding-left: 1.5rem; border-left: 3px solid var(--accent);">
+                        <div style="position: relative; padding-left: 1.5rem; border-left: 3px solid var(--accent);">
                             <p style="color: #ccc; line-height: 1.7; font-size: 1.05rem; margin-bottom: 1rem;">Soy
                                 estudiante de Ingenieria en sistemas Computacionales en el Instituto Tecnologico de
                                 Mérida. Me gusta programar y estoy aprendiendo a realizar modelado 3D en blender.
@@ -229,8 +243,7 @@
 
                     <!-- Columna Derecha: Diseño & Modelado -->
                     <div style="display: flex; flex-direction: column; justify-content: center;">
-                        <span
-                            style="color: transparent; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 2px; font-weight: 800; margin-bottom: 5px; user-select: none;">Espacio</span>
+                        <br>
                         <h3
                             style="color: #fff; margin-top: 0; font-size: 2.5rem; font-weight: 800; line-height: 1.1; margin-bottom: 1.5rem;">
                             Diseño <span
@@ -286,10 +299,10 @@
 
         <!-- Controles Flotantes para Interacciones -->
         <div class="floating-controls">
-            <button id="theme-toggle" class="control-btn" title="Alternar Modo Claro/Oscuro">
+            <button class="control-btn theme-toggle" title="Alternar Modo Claro/Oscuro">
                 <span style="pointer-events: none;">☀️</span>
             </button>
-            <button id="color-toggle" class="control-btn" title="Cambiar Diseño del Setup">
+            <button class="control-btn color-toggle" title="Cambiar Diseño del Setup">
                 <span style="pointer-events: none;">🎨</span>
             </button>
         </div>
