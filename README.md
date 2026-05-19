@@ -2,9 +2,9 @@
 
 This is a personal portfolio featuring a 3D interactive scene developed for project. The site showcases a custom-made developer setup modeled in Blender and integrated using Three.js.
 
-## 📷 Vista Previa / Screenshots
+## 📷 Preview / Screenshots
 
-| 💻 Versión de Escritorio (PagePC) | 📱 Versión Móvil (PageMobile) |
+| 💻 Desktop Version (PagePC) | 📱 Mobile Version (PageMobile) |
 | :---: | :---: |
 | <img src="assets/PagePC.png" width="100%" alt="PagePC Preview"> | <img src="assets/PageMobile.png" width="280px" alt="PageMobile Preview"> |
 
