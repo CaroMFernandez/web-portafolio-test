@@ -183,7 +183,12 @@ const portfolioData = [
         description: "Modelo 3D integral generado en Blender.<br><br>Elementos importados:<br>• Taza Minecraft<br>• Silla Ergonómica<br>• Mouse Gamer",
         image: "./assets/Setup2.png"
     },
-    { id: 2, title: "Animación en Rive", description: "Proyecto de animación interactiva creado con Rive. <br><br><a href='https://github.com/CaroMFernandez/login_with_rive_animation_torres_com' target='_blank' style='color: #ff6a00; text-decoration: underline; font-weight: 600;'>Ver Repositorio en GitHub</a>", image: "https://github.com/CaroMFernandez/login_with_rive_animation_torres_com/raw/main/assets/demo.gif" },
+    {
+        id: 2,
+        title: "Animación en Rive",
+        description: "Proyecto de animación interactiva creado con Rive. <br><br><a href='https://github.com/CaroMFernandez/login_with_rive_animation_torres_com' target='_blank' style='color: #ff6a00; text-decoration: underline; font-weight: 600;'>Ver Repositorio en GitHub</a>",
+        image: "https://github.com/CaroMFernandez/login_with_rive_animation_torres_com/raw/main/assets/demo.gif"
+    }
 ];
 
 const renderGallery = () => {
@@ -203,6 +208,14 @@ const renderGallery = () => {
         itemDiv.addEventListener('click', () => {
             document.querySelectorAll('.gallery-item').forEach(el => el.classList.remove('active'));
             itemDiv.classList.add('active');
+
+            // Sincronizar con los tabs móviles en responsivo
+            const tabs = document.querySelectorAll('.project-tab');
+            tabs.forEach(t => t.classList.remove('active'));
+            if (tabs[index]) {
+                tabs[index].classList.add('active');
+            }
+
             titleEl.style.opacity = 0;
             descEl.style.opacity = 0;
             setTimeout(() => {
@@ -213,6 +226,47 @@ const renderGallery = () => {
             }, 300);
         });
         track.appendChild(itemDiv);
+    });
+};
+
+/* --- TABS DE NAVEGACIÓN MÓVIL (MODO RESPONSIVO) --- */
+const setupProjectTabs = () => {
+    const tabs = document.querySelectorAll('.project-tab');
+    const titleEl = document.getElementById('project-title');
+    const descEl = document.getElementById('project-desc');
+    if (!tabs.length) return;
+
+    tabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+            const index = parseInt(tab.getAttribute('data-project-index'), 10);
+
+            // Actualizar clase activa en los tabs
+            tabs.forEach(t => t.classList.remove('active'));
+            tab.classList.add('active');
+
+            // Sincronizar y activar el elemento correspondiente en la galería inferior
+            const galleryItems = document.querySelectorAll('.gallery-item');
+            if (galleryItems[index]) {
+                galleryItems.forEach(el => el.classList.remove('active'));
+                galleryItems[index].classList.add('active');
+
+                // Desplazar la galería de manera suave para centrar el elemento activo
+                galleryItems[index].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+            }
+
+            // Transición suave para actualizar título y descripción del proyecto
+            const item = portfolioData[index];
+            if (item && titleEl && descEl) {
+                titleEl.style.opacity = 0;
+                descEl.style.opacity = 0;
+                setTimeout(() => {
+                    titleEl.innerHTML = item.title;
+                    descEl.innerHTML = item.description;
+                    titleEl.style.opacity = 1;
+                    descEl.style.opacity = 1;
+                }, 300);
+            }
+        });
     });
 };
 
@@ -363,6 +417,7 @@ const setupInteractions = () => {
 document.addEventListener('DOMContentLoaded', () => {
     init3DScene();
     renderGallery();
+    setupProjectTabs();
     setupModals();
     setupInteractions();
 });

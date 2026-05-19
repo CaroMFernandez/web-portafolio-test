@@ -53,11 +53,11 @@ body.light-theme .skills-content h3,
 body.light-theme .about-skills h4,
 body.light-theme .skills-content span {
     text-shadow:
-        -1.5px -1.5px 0 #000,  
-         1.5px -1.5px 0 #000,
-        -1.5px  1.5px 0 #000,
-         1.5px  1.5px 0 #000,
-         0px 2px 4px rgba(0, 0, 0, 0.5) !important;
+        -1.5px -1.5px 0 #000,
+        1.5px -1.5px 0 #000,
+        -1.5px 1.5px 0 #000,
+        1.5px 1.5px 0 #000,
+        0px 2px 4px rgba(0, 0, 0, 0.5) !important;
 }
 
 * {
@@ -206,6 +206,11 @@ nav a.active {
     font-size: 0.8rem;
     font-weight: 600;
     border: 1px solid rgba(255, 106, 0, 0.3);
+}
+
+/* Tabs de Navegación de Proyectos */
+.project-tabs {
+    display: none;
 }
 
 /* Galería (Carrusel inferior encogido) */
@@ -385,18 +390,6 @@ nav a.active {
     }
 }
 
-.profile-pic-large {
-    width: 200px;
-    height: 200px;
-    border-radius: 50%;
-    background-image: url('https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=400&auto=format&fit=crop');
-    background-size: cover;
-    background-position: center;
-    border: 4px solid var(--bg-dark);
-    /* Deshacer rotación en la imagen para que no gire el retrato */
-    animation: reverseRotateGlow 10s linear infinite;
-}
-
 @keyframes reverseRotateGlow {
     0% {
         transform: rotate(0deg);
@@ -571,6 +564,7 @@ nav a.active {
         opacity: 0;
         transform: translateY(30px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
@@ -578,6 +572,7 @@ nav a.active {
 }
 
 @media (max-width: 768px) {
+
     /* --- MENÚ ACTIVO (FACEBOOK STYLE) --- */
     body.mobile-menu-active {
         overflow: hidden !important;
@@ -595,12 +590,14 @@ nav a.active {
         right: 0 !important;
         margin: 0 !important;
         padding: 0 !important;
-        z-index: 99999999 !important; /* On top of absolutely everything */
+        z-index: 99999999 !important;
+        /* On top of absolutely everything */
     }
 
     body.mobile-menu-active .logo,
     body.mobile-menu-active .mobile-menu-btn {
-        display: none !important; /* Hide other header items */
+        display: none !important;
+        /* Hide other header items */
     }
 
     body.mobile-menu-active .project-info,
@@ -609,7 +606,8 @@ nav a.active {
     body.mobile-menu-active #canvas-container {
         opacity: 0 !important;
         pointer-events: none !important;
-        visibility: hidden !important; /* Completely hide background and 3D canvas */
+        visibility: hidden !important;
+        /* Completely hide background and 3D canvas */
         transition: opacity 0.2s ease, visibility 0.2s;
     }
 
@@ -629,14 +627,16 @@ nav a.active {
     }
 
     body.modal-active .modal-overlay {
-        background: var(--bg-dark) !important; /* Fondo completamente sólido en celular */
+        background: var(--bg-dark) !important;
+        /* Fondo completamente sólido en celular */
         backdrop-filter: none !important;
         -webkit-backdrop-filter: none !important;
     }
 
     /* Asegurar que los controles flotantes queden por encima y 100% interactivos */
     body.modal-active .floating-controls {
-        z-index: 10000000 !important; /* Encima de overlay (999999) y debajo de menú (99999999) */
+        z-index: 10000000 !important;
+        /* Encima de overlay (999999) y debajo de menú (99999999) */
         opacity: 1 !important;
         visibility: visible !important;
         pointer-events: auto !important;
@@ -691,13 +691,15 @@ nav a.active {
         left: 0;
         width: 100vw;
         height: 100vh;
-        background: var(--bg-dark); /* Solid, fully opaque background matching the theme */
+        background: var(--bg-dark);
+        /* Solid, fully opaque background matching the theme */
         border: none;
         border-radius: 0;
         padding: 2rem;
         gap: 2rem;
         box-shadow: none;
-        z-index: 99999999; /* Over absolutely everything */
+        z-index: 99999999;
+        /* Over absolutely everything */
     }
 
     nav#main-nav.show-mobile-menu {
@@ -708,7 +710,8 @@ nav a.active {
         width: auto;
         text-align: center;
         padding: 0.5rem 2rem;
-        font-size: 2.2rem; /* Make menu items nice and big like Facebook */
+        font-size: 2.2rem;
+        /* Make menu items nice and big like Facebook */
         font-weight: 800;
         opacity: 0;
         transition: color 0.3s, transform 0.2s;
@@ -719,10 +722,21 @@ nav a.active {
         animation: fadeInSlideUp 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
     }
 
-    nav#main-nav.show-mobile-menu a:nth-child(2) { animation-delay: 0.1s; }
-    nav#main-nav.show-mobile-menu a:nth-child(3) { animation-delay: 0.18s; }
-    nav#main-nav.show-mobile-menu a:nth-child(4) { animation-delay: 0.26s; }
-    nav#main-nav.show-mobile-menu a:nth-child(5) { animation-delay: 0.34s; }
+    nav#main-nav.show-mobile-menu a:nth-child(2) {
+        animation-delay: 0.1s;
+    }
+
+    nav#main-nav.show-mobile-menu a:nth-child(3) {
+        animation-delay: 0.18s;
+    }
+
+    nav#main-nav.show-mobile-menu a:nth-child(4) {
+        animation-delay: 0.26s;
+    }
+
+    nav#main-nav.show-mobile-menu a:nth-child(5) {
+        animation-delay: 0.34s;
+    }
 
     nav#main-nav a:hover,
     nav#main-nav a.active {
@@ -737,6 +751,62 @@ nav a.active {
         color: #fff !important;
         font-weight: 800;
         box-shadow: 0 10px 25px rgba(255, 106, 0, 0.3);
+    }
+
+    /* Tabs de navegación para celular */
+    .project-tabs {
+        display: flex !important;
+        gap: 8px;
+        margin-bottom: 1rem;
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid var(--glass-border);
+        padding: 5px;
+        border-radius: 100px;
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    body.light-theme .project-tabs {
+        background: rgba(0, 0, 0, 0.03);
+    }
+
+    .project-tab {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        background: transparent;
+        border: none;
+        color: var(--text-secondary);
+        padding: 8px 14px;
+        border-radius: 100px;
+        font-size: 0.85rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        pointer-events: auto;
+    }
+
+    .project-tab .tab-icon {
+        width: 16px;
+        height: 16px;
+        stroke: var(--text-secondary);
+        transition: all 0.3s;
+    }
+
+    .project-tab.active {
+        background: var(--accent);
+        color: #fff !important;
+        box-shadow: 0 4px 15px rgba(255, 106, 0, 0.3);
+    }
+
+    .project-tab.active .tab-icon {
+        stroke: #fff !important;
+    }
+
+    .project-tab:active {
+        transform: scale(0.95);
     }
 
     /* === RESPONSIVE DE LA PÁGINA PRINCIPAL === */
@@ -802,7 +872,8 @@ nav a.active {
 
     /* === RESPONSIVE DE LOS MODALES === */
     .modal-overlay {
-        z-index: 999999; /* Ensure modals are below full screen menu but above main page content */
+        z-index: 999999;
+        /* Ensure modals are below full screen menu but above main page content */
     }
 
     .modal-content {
@@ -840,10 +911,11 @@ nav a.active {
 
     .about-content .profile-pic {
         width: 130px !important;
-        height: 162px !important; /* 4:5 Aspect ratio maintained */
+        height: 162px !important;
+        /* 4:5 Aspect ratio maintained */
         margin: 0 auto !important;
         border-radius: 12px !important;
-        box-shadow: 0 10px 25px rgba(0,0,0,0.6) !important;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.6) !important;
     }
 
     .about-content div[style*="display: flex; flex-direction: column; justify-content: center"] {
